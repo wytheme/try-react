@@ -1,0 +1,61 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>React Tutorial</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react-dom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <div id="example"></div>
+    <!-- <script type="text/babel" src="scripts/example.js"></script> -->
+    <script type="text/babel">
+      // To get started with this tutorial running your own code, simply remove
+      // the script tag loading scripts/example.js and start writing code here.
+      // - CommentBox
+      // - CommentList
+      //   - Comment
+      // - CommentForm
+
+      var SetIntervalMixin = {
+        componentWillMount: function() {
+          this.intervals = [];
+        },
+        setInterval: function() {
+          this.intervals.push(setInterval.apply(null, arguments));
+        },
+        componentWillUnmount: function() {
+          this.intervals.map(clearInterval);
+        }
+      };
+
+      var TickTock = React.createClass({
+        mixins: [SetIntervalMixin], // 引用 mixin
+        getInitialState: function() {
+          return {seconds: 0};
+        },
+        componentDidMount: function() {
+          this.setInterval(this.tick, 1000); // 调用 mixin 的方法
+        },
+        tick: function() {
+          this.setState({seconds: this.state.seconds + 1});
+        },
+        render: function() {
+          return (
+            <p>
+              React has been running for {this.state.seconds} seconds.
+            </p>
+          );
+        }
+      });
+
+      React.render(
+        <TickTock />,
+        document.getElementById('example')
+      );
+    </script>
+  </body>
+</html>
