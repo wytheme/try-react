@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello React!</title>
+    <script src="../build/react.js"></script>
+    <script src="../build/react-dom.js"></script>
+    <script src="../build/browser.min.js"></script>
+  </head>
+  <body>
+    <div id="example"></div>
+    <script type="text/babel">
+      var Input = React.createClass({
+        componentWillReceiveProps: function(nextProps) {
+          console.log('componentWillReceiveProps', nextProps, this.props);
+        },
+        getInitialState: function() {
+          return { text: ''}
+        },
+        handelChange: function(e) {
+          this.setState({
+            text: e.target.value
+          })
+        },
+        render: function() {
+          console.log('render', this.state.text);
+
+          var value = this.state.text;
+          return <div>
+            <p>{this.state.text}</p>
+            <input type="text" onChange={this.handelChange} value={value}/>
+          </div>
+        }
+      });
+      var data = {text: 1};
+      var container = document.getElementById('example');
+      ReactDOM.render( <Input text={data}/>,container );
+      data.text = 2;
+      ReactDOM.render( <Input text={data}/>,container );
+      data.text = 3;
+      ReactDOM.render( <Input text={data}/>,container );
+    </script>
+  </body>
+</html>

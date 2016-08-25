@@ -229,7 +229,7 @@ var Liked = React.createClass({
   render: function() {
     return <div>
       {this.state.liked ? "赞" : ''}
-      <input type="button" onClick={this.handleClick} value="点赞"/>
+      <input type="button" onClick={this.handleClick}/>
     </div>
   }
 });
@@ -239,6 +239,164 @@ ReactDOM.render(
 );
 ```
 
+## Demo09 表单
+
+- 交互用`onChange`(如radio、checkbox、select等)
+- 取值通过 `e.target.value`
+- 别忘记给自身赋值
+
+
+```js
+var Input = React.createClass({
+  getInitialState: function() {
+    return {
+      text: ''
+    }
+  },
+  handelChange: function(e) {
+    this.setState({
+      text: e.target.value
+    })
+  },
+  render: function() {
+    var value = this.state.value;
+    return <div>
+      <p>{this.state.text}</p>
+      <input type="text" onChange={this.handelChange} value={value}/>
+    </div>
+  }
+});
+ReactDOM.render(
+  <Input/>,
+  document.getElementById('example')
+);
+```
+
+## Demo10 组件的生命周期
+
+[官方文档](http://reactjs.cn/react/docs/component-specs.html)
+
+- Mounting
+  - componentWillMount  组件将要装载
+    - rendering之前调用
+    - 即使调用`setState`, render只会触发一次
+  - componentDidMount 组件已装载
+    - 渲染后立即执行
+    - 仅客户端有效
+    - 此时`refs`可用
+    - 先子组件后父组件，冒泡传递
+    - 此时加载其他框架、`setTimeout`、`setInterval`、`AJAX`
+- Updating
+  - componentWillReceiveProps(object nextProps)
+    - 初始化render不会调用此函数
+    - new props时触发
+    - 可以比对 `this.props` 和 `nextProps` 然后调用 `this.setState`
+  - shouldComponentUpdate(object nextProps, object nextState)
+    - 如果定义forceUpdate，此方法不会触发
+    - 如果return false，`render()`不会触发
+    - 此方法可以在做性能优化时使用，当组件特地多的时候
+  - componentWillUpdate(object nextProps, object nextState)
+    - new props or state 时触发
+    - DOM更新前触发
+    - 初始化不触发
+    - 不能使用 `this.setState`
+  - componentDidUpdate(object prevProps, object prevState)
+    - DOM更新后触发
+    - 初始化不触发
+- Unmounting
+  - componentWillUnmount
+    - 从DOM卸载后触发
+    - 可以清理timers、其他DOM元素
+
+借用图片清晰明了
+![][lifecycle]
+
+
+```js
+var Input = React.createClass({
+  componentWillMount: function() {
+    this.setState({
+      text: '123'
+    })
+    console.log('componentWillMount');
+  },
+  componentDidMount: function() {
+    console.log('componentDidMount');
+  },
+  componentWillReceiveProps: function(nextProps) {
+    console.log('componentWillReceiveProps', nextProps, this.props);
+  },
+  shouldComponentUpdate: function(nextProps, nextState) {
+    return nextProps.id !== this.props.id;
+  },
+  getInitialState: function() {
+    return {
+      text: ''
+    }
+  },
+  handelChange: function(e) {
+    this.setState({
+      text: e.target.value
+    })
+  },
+  render: function() {
+    console.log('render');
+
+    var value = this.state.value;
+    return <div>
+      <p>{this.state.text}</p>
+      <input type="text" onChange={this.handelChange} value={value}/>
+    </div>
+  }
+});
+var data = {text: 1};
+var container = document.getElementById('example');
+ReactDOM.render( <Input text={data}/>,container );
+```
+
+## Demo11 componentWillReceiveProps的陷阱
+
+[官方文档](http://reactjs.cn/react/blog/2016/01/08/A-implies-B-does-not-imply-B-implies-A.html)
+
+- `componentWillReceiveProps` will be invoked when the props change as the result of a rerender
+- rerender 重新渲染即会触发，即使props的值并未变化，见下图
+- 由于没法跟踪原始数据状态，所以提供`componentWillReceiveProps`方法，用户自己判定是否需要修改state，注意`componentWillReceiveProps`默认不会触发`setState`的操作
+- 此方法有点偏向于异步流程，所以data.text的赋值最后一次才生效
+
+```js
+var Input = React.createClass({
+  componentWillReceiveProps: function(nextProps) {
+    console.log('componentWillReceiveProps', nextProps, this.props);
+  },
+  getInitialState: function() {
+    return { text: ''}
+  },
+  handelChange: function(e) {
+    this.setState({
+      text: e.target.value
+    })
+  },
+  render: function() {
+    console.log('render', this.state.text);
+
+    var value = this.state.text;
+    return <div>
+      <p>{this.state.text}</p>
+      <input type="text" onChange={this.handelChange} value={value}/>
+    </div>
+  }
+});
+var data = {text: 1};
+var container = document.getElementById('example');
+ReactDOM.render( <Input text={data}/>,container );
+data.text = 2;
+ReactDOM.render( <Input text={data}/>,container );
+data.text = 3;
+ReactDOM.render( <Input text={data}/>,container );
+```
+
+![][componentWillReceiveProps]
+
 
 ## 延伸
 
@@ -246,4 +404,5 @@ ReactDOM.render(
 
 ## 参考
 
-[React 入门实例教程](http://www.ruanyifeng.com/blog/2015/03/react.html) - ruanyifeng
+[lifecycle]: ./images/3-3-component-lifecycle.jpg
+[componentWillReceiveProps]: ./images/componentWillReceiveProps.png
