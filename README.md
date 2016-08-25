@@ -2,7 +2,7 @@
 # React demos
 
 Based on
-- React Starter Kit 15.3.1
+- [React](https://github.com/facebook/react/tree/master/docs/docs)
 - [React 入门实例教程](http://www.ruanyifeng.com/blog/2015/03/react.html) by ruanyifeng
 
 ## Index
@@ -18,6 +18,8 @@ Based on
 1. [Demo09 表单](#demo09-表单)
 1. [Demo10 组件的生命周期](#demo10-组件的生命周期)
 1. [Demo11 componentWillReceiveProps的陷阱](#demo11-componentwillreceiveprops的陷阱)
+1. [Demo12 AJAX](#demo12-ajax)
+1. [Demo13 教程](#demo13-教程)
 
 ## Demo01 JSX in HTML
 
@@ -48,7 +50,8 @@ Based on
 - 无需引号
 - HTML和JS混合使用
 - **以`<`开头会以HTML渲染**
-- **以`{`开头会以JS渲染**  （记住有助于对其他语法的写法）
+- **以`{`开头会以JS渲染**
+    - `style={{opacity: this.state.opacity}}` 第一层大括号代表的仅仅是以JS解析
 
 ```js
 var names = ['a', 'b', 'c'];
@@ -411,6 +414,76 @@ ReactDOM.render( <Input text={data}/>,container );
 
 ![][componentWillReceiveProps]
 
+## Demo12 AJAX
+
+[官方文档](http://reactjs.cn/react/tips/initial-ajax.html)
+
+- `componentDidMount`
+
+```js
+var UserGist = React.createClass({
+  getInitialState: function() {
+    return {
+      username: '',
+      lastGistUrl: ''
+    };
+  },
+
+  componentDidMount: function() {
+    this.serverRequest = $.get(this.props.source, function (result) {
+      var lastGist = result[0];
+      this.setState({
+        username: lastGist.owner.login,
+        lastGistUrl: lastGist.html_url
+      });
+    }.bind(this));
+  },
+
+  componentWillUnmount: function() {
+    this.serverRequest.abort();
+  },
+
+  render: function() {
+    return (
+      <div>
+        {this.state.username} s last gist is
+        <a href={this.state.lastGistUrl}>here</a>.
+      </div>
+    );
+  }
+  });
+
+  ReactDOM.render(
+    <UserGist source="https://api.github.com/users/octocat/gists" />,
+    document.getElementById('example')
+  );
+```
+
+## Demo13 教程
+
+[官方文档](https://facebook.github.io/react/docs/tutorial-zh-CN.html)
+
+```
+<span dangerouslySetInnerHTML={{ __html: rawMarkup }} />
+```
+  - [XSS](https://developer.mozilla.org/zh-CN/docs/Glossary/Cross-site_scripting)攻击风险，请谨慎
+
+```js
+handleAuthorChange: function(e) {
+  this.setState({author: e.target.value});
+},
+handleTextChange: function(e) {
+  this.setState({text: e.target.value});
+},
+```
+  - setState 是extend的语法而不是reset
+
+```js
+<Comment author={comment.author} key={comment.id}>
+```
+  - [key](https://facebook.github.io/react/docs/multiple-components.html)
+  - key 作用于组件的重复利用
+  - 注意：key必须定义在组件props上，而不是组件内部的HTML上面
 
 ## 延伸
 
