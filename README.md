@@ -13,11 +13,11 @@ Based on
 1. [Demo04 组件](#demo04-组件)
 1. [Demo05 this.props.children](#demo05-thispropschildren)
 1. [Demo06 PropTypes](#demo06-proptypes)
-1. [Demo07 真实的DOM节点](#demo07-真实的DOM节点)
+1. [Demo07 真实的DOM节点](#demo07-真实的dom节点)
 1. [Demo08 this.state](#demo08-thisstate)
 1. [Demo09 表单](#demo09-表单)
 1. [Demo10 组件的生命周期](#demo10-组件的生命周期)
-1. [Demo11 componentWillReceiveProps的陷阱](#demo11-componentWillReceiveProps的陷阱)
+1. [Demo11 componentWillReceiveProps的陷阱](#demo11-componentwillreceiveprops的陷阱)
 
 ## Demo01 JSX in HTML
 
