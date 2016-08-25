@@ -3,9 +3,21 @@
 
 Based on
 - React Starter Kit 15.3.1
-- [React 入门实例教程 - ruanyifeng](http://www.ruanyifeng.com/blog/2015/03/react.html)
+- [React 入门实例教程](http://www.ruanyifeng.com/blog/2015/03/react.html) by ruanyifeng
 
-重敲所有代码，发现其中属于自己的遗留点。
+## Index
+
+1. [Demo01 JSX in HTML](#demo01-jsx-in-html)
+1. [Demo02 JSX](#demo02-jsx)
+1. [Demo03 JSX](#demo03-jsx)
+1. [Demo04 组件](#demo04-组件)
+1. [Demo05 this.props.children](#demo05-thispropschildren)
+1. [Demo06 PropTypes](#demo06-proptypes)
+1. [Demo07 真实的DOM节点](#demo07-真实的DOM节点)
+1. [Demo08 this.state](#demo08-thisstate)
+1. [Demo09 表单](#demo09-表单)
+1. [Demo10 组件的生命周期](#demo10-组件的生命周期)
+1. [Demo11 componentWillReceiveProps的陷阱](#demo11-componentWillReceiveProps的陷阱)
 
 ## Demo01 JSX in HTML
 
@@ -134,7 +146,9 @@ ReactDOM.render(
 );
 ```
 
-## Demo06 [PropTypes](https://facebook.github.io/react/docs/reusable-components.html)
+## Demo06 PropTypes
+
+[官方文档](https://facebook.github.io/react/docs/reusable-components.html)
 
 - `propTypes` 类型校验集合
   - {属性：属性类型}
@@ -202,7 +216,7 @@ ReactDOM.render(
 );
 ```
 
-## Demo07 this.state
+## Demo08 this.state
 
 - 组件状态通过`this.state`维护
 - `getInitialState` 定义初始状态
