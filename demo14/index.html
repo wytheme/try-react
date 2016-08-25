@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello React!</title>
+    <script src="../build/react.js"></script>
+    <script src="../build/react-dom.js"></script>
+    <script src="../build/browser.min.js"></script>
+    <script src="../build/jquery.min.js"></script>
+  </head>
+  <body>
+    <div id="example"></div>
+    <script type="text/babel">
+    var Form = React.createClass({
+        render: function() {
+          return (<form>表单：{this.props.children}</form>);
+        }
+      });
+    Form.P = React.createClass({
+      render: function() {
+        return <p>123</p>;
+      }
+    });
+    Form.Input = React.createClass({
+      render: function() {
+        return <input type="text"/>
+      }
+    });
+    ReactDOM.render(
+      <Form name="f">
+        {/* child comment, put {} around */}
+        <Form.P
+        /* 123 */
+        />
+        <Form.Input // end of line comment
+        /> 
+      </Form>,
+      document.getElementById('example')
+    );
+    </script>
+  </body>
+</html>

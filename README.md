@@ -23,6 +23,10 @@ Based on
 
 ## Demo01 JSX in HTML
 
+- `ReactDOM.render()` html渲染
+- `React.createFactory` 工厂类
+- `React.DOM.ul` HTML标签的内置工程方法
+
 ```html
 // React 核心库
 <script src="../build/react.js"></script>
@@ -30,18 +34,18 @@ Based on
 <script src="../build/react-dom.js"></script>
 // JSX to JavaScript
 <script src="../build/browser.min.js"></script>
-```
-
-`ReactDOM.render()` html渲染
-
-
-```html
-// 标识为JSX语法
+// 标识为JSX语法 text/bael
 <script type="text/babel">
   ReactDOM.render(
      <h1>Hello, world!</h1>,
      document.getElementById('example')
   );
+  //var Factory = React.createFactory(ComponentClass);
+  //var root = Factory({ custom: 'prop' });
+  //ReactDOM.render(root, document.getElementById('example'));
+  //React.DOM.ul({ className: 'my-list' },
+  //  React.DOM.li(null, 'Text Content')
+  //);
 </script>
 ```
 
@@ -484,6 +488,40 @@ handleTextChange: function(e) {
   - [key](https://facebook.github.io/react/docs/multiple-components.html)
   - key 作用于组件的重复利用
   - 注意：key必须定义在组件props上，而不是组件内部的HTML上面
+
+## Demo14 命名组件
+
+- "子组件"可以创建为主组件的属性。
+- 注意3种注释的方式
+
+```js
+var Form = React.createClass({
+    render: function() {
+      return (<form>表单：{this.props.children}</form>);
+    }
+  });
+Form.P = React.createClass({
+  render: function() {
+    return <p>123</p>;
+  }
+});
+Form.Input = React.createClass({
+  render: function() {
+    return <input type="text"/>
+  }
+});
+ReactDOM.render(
+  <Form name="f">
+    {/* child comment, put {} around */}
+    <Form.P
+    /* 123 */
+    />
+    <Form.Input // end of line comment
+    />
+  </Form>,
+  document.getElementById('example')
+);
+```
 
 ## 延伸
 
