@@ -575,6 +575,7 @@ console.log(component.props);
 - mixin的方法可以直接调用
 - 重复mixin会依次执行，最后执行组建内定义的方法
 - 构建的自己的mixins
+- ES6不支持mixins
 
 ```js
 var SetIntervalMixin = {
