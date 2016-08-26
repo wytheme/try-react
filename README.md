@@ -572,7 +572,48 @@ console.log(component.props);
 
 ## Demo16 Mixins
 
+- mixin的方法可以直接调用
+- 重复mixin会依次执行，最后执行组建内定义的方法
+- 构建的自己的mixins
 
+```js
+var SetIntervalMixin = {
+  componentWillMount: function() {
+    this.intervals = [];
+  },
+  setInterval: function() {
+    this.intervals.push(setInterval.apply(null, arguments));
+  },
+  componentWillUnmount: function() {
+    this.intervals.forEach(clearInterval);
+  }
+};
+
+var TickTock = React.createClass({
+  mixins: [SetIntervalMixin], // 引用 mixin
+  getInitialState: function() {
+    return {seconds: 0};
+  },
+  componentDidMount: function() {
+    this.setInterval(this.tick, 1000); // 调用 mixin 的方法
+  },
+  tick: function() {
+    this.setState({seconds: this.state.seconds + 1});
+  },
+  render: function() {
+    return (
+      <p>
+        React has been running for {this.state.seconds} seconds.
+      </p>
+    );
+  }
+});
+
+ReactDOM.render(
+  <TickTock />,
+  document.getElementById('example')
+);
+```
 
 ## todo
 
@@ -583,6 +624,9 @@ ReactFragment - https://facebook.github.io/react/docs/create-fragment.html
 1. babel / babel-cli
 
 ## 参考
+
+[awesome-react](https://github.com/enaqx/awesome-react)
+
 
 [lifecycle]: ./images/3-3-component-lifecycle.jpg
 [componentWillReceiveProps]: ./images/componentWillReceiveProps.png
