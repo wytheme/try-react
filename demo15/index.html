@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello React!</title>
+    <script src="../build/react.js"></script>
+    <script src="../build/react-dom.js"></script>
+    <script src="../build/browser.min.js"></script>
+    <script src="../build/jquery.min.js"></script>
+  </head>
+  <body>
+    <div id="example"></div>
+    <script type="text/babel">
+    var Component = React.createClass({
+      render: function() {
+        console.log(this.props)
+        return <p></p>;
+      }
+    })
+    // var component = <Component />;
+    // wrong
+    // component.props.foo = 1;
+    // component.props.bar = 2;
+    // embedded:11 Uncaught TypeError: Can't add property foo, object is not extensible
+    // console.log(component.props);
+
+    var props = {};
+    props.foo = 1;
+    props.bar = 2;
+    var component = <Component {...props} bar={3}/>;
+    ReactDOM.render(
+      component,
+      document.getElementById('example')
+    )
+    // {foo: 1, bar: 3}
+    console.log(component.props);
+    </script>
+  </body>
+</html>

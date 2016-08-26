@@ -20,6 +20,8 @@ Based on
 1. [Demo11 componentWillReceiveProps的陷阱](#demo11-componentwillreceiveprops的陷阱)
 1. [Demo12 AJAX](#demo12-ajax)
 1. [Demo13 教程](#demo13-教程)
+1. [Demo14 命名组件](#demo14-命名组件)
+1. [Demo15 展开属性](#demo15-展开属性)
 
 ## Demo01 JSX in HTML
 
@@ -231,6 +233,10 @@ ReactDOM.render(
   - 随着用户互动而产生变化的特性
   - 维护状态
   - 触发 this.render 重新渲染
+  - 不应该作为state
+    - 计算所得属性 直接在 `render()` 里使用 `this.state.listItems.length + ' list items'` 比把它放到 state 里好的多。
+    - React组件
+    - 基于props的重复数据
 - `this.props`
   - 一旦定义在组件内就不再改变的属性
 
@@ -522,6 +528,46 @@ ReactDOM.render(
   document.getElementById('example')
 );
 ```
+
+## Demo15 展开属性
+
+- `props` 是不可变
+- 批量定义`props`可以借用`Spread Attributes ...` 具体见ES6
+- 同属性多次定义，后面的会覆盖前面的
+
+```js
+var Component = React.createClass({
+  render: function() {
+    console.log(this.props)
+    return <p></p>;
+  }
+})
+// wrong!
+// var component = <Component />;
+// component.props.foo = 1;
+// component.props.bar = 2;
+// embedded:11 Uncaught TypeError: Can't add property foo, object is not extensible
+// console.log(component.props);
+
+var props = {};
+props.foo = 1;
+props.bar = 2;
+var component = <Component {...props} bar={3}/>;
+ReactDOM.render(
+  component,
+  document.getElementById('example')
+)
+// {foo: 1, bar: 3}
+console.log(component.props);
+```
+
+## Demo16 可复用组件
+
+
+
+## todo
+
+ReactFragment - https://facebook.github.io/react/docs/create-fragment.html
 
 ## 延伸
 
