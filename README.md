@@ -5,6 +5,15 @@ Based on
 - [React](https://github.com/facebook/react/tree/master/docs/docs)
 - [React 入门实例教程](http://www.ruanyifeng.com/blog/2015/03/react.html) by ruanyifeng
 
+## 框架关注点
+
+- 基本语法
+- 数据源
+- 校验
+- 生命周期
+- 组件化
+- 异步
+
 ## Index
 
 1. [Demo01 JSX in HTML](#demo01-jsx-in-html)
@@ -561,7 +570,7 @@ ReactDOM.render(
 console.log(component.props);
 ```
 
-## Demo16 可复用组件
+## Demo16 Mixins
 
 
 
