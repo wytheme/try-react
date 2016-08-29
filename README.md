@@ -32,7 +32,7 @@ Based on
 1. [Demo14 命名组件](#demo14-命名组件)
 1. [Demo15 展开属性](#demo15-展开属性)
 1. [Demo16 Mixins和无状态函数](#demo16-mixins和无状态函数)
-1. [Demo17 ES6 and webpack](#demo17-es6andwebpack)
+1. [Demo17 ES6 and webpack](#demo17-es6-and-webpack)
 
 ## Demo01 JSX in HTML
 
