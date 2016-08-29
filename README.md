@@ -31,6 +31,8 @@ Based on
 1. [Demo13 教程](#demo13-教程)
 1. [Demo14 命名组件](#demo14-命名组件)
 1. [Demo15 展开属性](#demo15-展开属性)
+1. [Demo16 Mixins和无状态函数](#demo16-mixins和无状态函数)
+1. [Demo17 ES6 and webpack](#demo17-es6andwebpack)
 
 ## Demo01 JSX in HTML
 
@@ -471,7 +473,6 @@ var UserGist = React.createClass({
     );
   }
   });
-
   ReactDOM.render(
     <UserGist source="https://api.github.com/users/octocat/gists" />,
     document.getElementById('example')
@@ -570,7 +571,7 @@ ReactDOM.render(
 console.log(component.props);
 ```
 
-## Demo16 Mixins
+## Demo16 Mixins和无状态函数
 
 - mixin的方法可以直接调用
 - 重复mixin会依次执行，最后执行组建内定义的方法
@@ -615,6 +616,94 @@ ReactDOM.render(
   document.getElementById('example')
 );
 ```
+
+无状态函数
+
+- 无备份实例，无引用，无DOM节点
+- if not 不要使用无状态函数，虽然这是推荐的用法
+
+
+```js
+function HelloMessage(props) {
+  return <div>Hello {props.name}</div>;
+}
+ReactDOM.render(<HelloMessage name="Sebastian" />, mountNode);
+
+const HelloMessage = (props) => <div>Hello {props.name}</div>;
+ReactDOM.render(<HelloMessage name="Sebastian" />, mountNode);
+```
+
+##Demo17 ES6 and webpack
+
+- 环境
+
+```bash
+➜  demo17 git:(master) ✗ npm install react react-dom --save
+➜  demo17 git:(master) ✗ npm install babel-loader babel-core babel-preset-es2015 babel-preset-react --save-dev
+➜  demo17 git:(master) ✗ npm install babel webpack webpack-dev-server -g
+➜  demo17 git:(master) ✗ npm start
+```
+
+- 导入依赖
+- ./ 当前目录
+
+```js
+// main.js
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App';
+
+ReactDOM.render(
+  // wrong!
+  // <App count="1"/>,
+  // right!
+  // <App count={1}/>,
+  <App/>,
+  document.getElementById('app')
+)
+```
+
+- `class`语法
+- 构造函数中`this.state`代替`getInitialState`设置`state`初始值
+- `propTypes` 和 `defaultProps` 是在构造函数里被定义为属性，而不是在 class body 里
+- 函数绑定3种方式
+
+```js
+// App.js
+
+import React from 'react';
+
+export default class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      count: props.count
+    };
+    // advice! bind first
+    this.tick = this.tick.bind(this);
+  }
+  tick() {
+    // wrong! this.state = {}
+    this.setState({
+      count: this.state.count + 1
+    });
+  }
+  render() {
+    // three different ways
+    // advice! the first one
+    return <div onClick={this.tick}>count: {this.state.count} </div>
+    // return <div onClick={this.tick.bind(this)}>count: {this.state.count} </div>
+    // return <div onClick={() => this.tick()}>count: {this.state.count} </div>
+  }
+}
+
+App.defaultProps = { count: 0};
+App.propTypes = { count: React.PropTypes.number};
+
+// also
+// export default App;
+```
+
 
 ## todo
 
