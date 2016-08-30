@@ -13,7 +13,8 @@
       var Input = React.createClass({
         getInitialState: function() {
           return {
-            text: ''
+            text: '',
+            // value: 'default 1'
           }
         },
         handelChange: function(e) {
@@ -21,16 +22,31 @@
             text: e.target.value
           })
         },
+        handelTextareaChange: function(e) {
+          console.log(e.target.value);
+        },
+        handelSelectChange: function(e) {
+          console.log(e.target.value);
+        },
         render: function() {
           var value = this.state.value;
           return <div>
             <p>{this.state.text}</p>
             <input type="text" onChange={this.handelChange} value={value}/>
-          </div>
+            <br/>
+            <textarea name="1" defaultValue="2" onChange={this.handelTextareaChange}/>
+            <br/>
+            { /*react.js:20483 Warning: Failed form propType: You provided a `value` prop to a form field without an `onChange` handler. This will render a read-only field. If the field should be mutable use `defaultValue`. Otherwise, set either `onChange` or `readOnly`. Check the render method of `Input`.*/ }
+            <select value="B" multiple={true} value={['B','C']} >
+              <option value="A">Apple</option>
+              <option value="B">Banana</option>
+              <option value="C">Cranberry</option>
+            </select>
+          </div>;
         }
       });
       ReactDOM.render(
-        <Input/>,
+        <Input />,
         document.getElementById('example')
       );
     </script>

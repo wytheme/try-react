@@ -217,15 +217,21 @@ Warning: Failed prop type: Required prop `children` was not specified in `HelloM
 - `ref="myTextInput"` ref 定义节点
 - `onClick={this.handleClick}` 注意事件绑定语法
 - 根节点只能一个
+- `render`中不要访问`ref`
 
 ```js
 var HelloMessage = React.createClass({
   handleClick: function() {
     this.refs.myTextInput.focus();
+    // this.myTextInput.focuse()
   },
   render: function() {
     return <div>
       <input type="text" ref="myTextInput"/>
+      <input type="text" ref={function(input) {
+        input.focuse();
+      }}/>
+      <input type="text" ref={(ref) => this.myTextInput = ref} />
       <input type="button" value="focus the text input" onClick={this.handleClick}/>
     </div>
   }
@@ -281,14 +287,19 @@ ReactDOM.render(
 
 - 交互用`onChange`(如radio、checkbox、select等)
 - 取值通过 `e.target.value`
-- 别忘记给自身赋值
+- 别忘记给自身赋值，区分受控组件和不受控组件
+- value属性需要伴随着`onChange`事件，否则字段将是一个只读字段
+- React 组件必须在任何时间点表现视图的状态
+- 如果域需要时不变的，那么用`defaultValue`
+- `<input type="checkbox">` 和 `<input type="radio">` 支持 `defaultChecked` 、 `<select>` 支持 defaultValue.
 
 
 ```js
 var Input = React.createClass({
   getInitialState: function() {
     return {
-      text: ''
+      text: '',
+      // value: 'default 1'
     }
   },
   handelChange: function(e) {
@@ -296,20 +307,39 @@ var Input = React.createClass({
       text: e.target.value
     })
   },
+  handelTextareaChange: function(e) {
+    console.log(e.target.value);
+  },
+  handelSelectChange: function(e) {
+    console.log(e.target.value);
+  },
   render: function() {
     var value = this.state.value;
     return <div>
       <p>{this.state.text}</p>
       <input type="text" onChange={this.handelChange} value={value}/>
-    </div>
+      <br/>
+      <textarea name="1" defaultValue="2" onChange={this.handelTextareaChange}/>
+      <br/>
+      { /*react.js:20483 Warning: Failed form propType: You provided a `value` prop to a form field without an `onChange` handler. This will render a read-only field. If the field should be mutable use `defaultValue`. Otherwise, set either `onChange` or `readOnly`. Check the render method of `Input`.*/ }
+      <select value="B" multiple={true} value={['B','C']} >
+        <option value="A">Apple</option>
+        <option value="B">Banana</option>
+        <option value="C">Cranberry</option>
+      </select>
+    </div>;
   }
 });
 ReactDOM.render(
-  <Input/>,
+  <Input />,
   document.getElementById('example')
 );
 ```
 
+
+```
+react.js:20483 Warning: Failed form propType: You provided a `value` prop to a form field without an `onChange` handler. This will render a read-only field. If the field should be mutable use `defaultValue`. Otherwise, set either `onChange` or `readOnly`. Check the render method of `Input`.
+```
 ## Demo10 组件的生命周期
 
 [官方文档](http://reactjs.cn/react/docs/component-specs.html)
@@ -630,6 +660,12 @@ function HelloMessage(props) {
 ReactDOM.render(<HelloMessage name="Sebastian" />, mountNode);
 
 const HelloMessage = (props) => <div>Hello {props.name}</div>;
+HelloMessage.propTypes = {
+  name: React.PropTypes.string
+}
+HelloMessage.defaultProps = {
+  name: 'John Doe'
+}
 ReactDOM.render(<HelloMessage name="Sebastian" />, mountNode);
 ```
 
@@ -704,14 +740,9 @@ App.propTypes = { count: React.PropTypes.number};
 // export default App;
 ```
 
+## Add-Ons
 
-## todo
-
-ReactFragment - https://facebook.github.io/react/docs/create-fragment.html
-
-## 延伸
-
-1. babel / babel-cli
+[官方文档](https://facebook.github.io/react/docs/addons-zh-CN.html)
 
 ## 参考
 
