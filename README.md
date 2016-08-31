@@ -39,6 +39,10 @@ Based on
 - `ReactDOM.render()` html渲染
 - `React.createFactory` 工厂类
 - `React.DOM.ul` HTML标签的内置工程方法
+- `React.createElement`
+- `React.cloneElement`
+- `React.renderToString` 服务端渲染
+- `React.findDOMNode`
 
 ```html
 // React 核心库
@@ -140,6 +144,10 @@ ReactDOM.render(
   - 一个 - `object`
   - 多个 - `array`
 - `React.Children` 工具类专门遍历 `this.props.children`
+- React.Children.map
+- React.Children.forEach
+- React.Children.count
+- React.Children.only
 
 ```js
 var NoteList = React.createClass({
